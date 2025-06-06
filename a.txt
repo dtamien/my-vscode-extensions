@@ -1,0 +1,51 @@
+from IPython.display import HTML
+import json
+
+html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/wigglystuff"></script>
+  <style>
+    body {{ font-family: sans-serif; }}
+    #selected {{ margin-top: 20px; }}
+  </style>
+</head>
+<body>
+
+<div id="vis"></div>
+<div id="selected">
+  <h3>Selected texts</h3>
+  <ul id="list"></ul>
+</div>
+
+<script>
+const data = {json.dumps(data)};
+
+// dimensions = PCA axes
+const dims = Object.keys(data[0]).filter(d => d.startsWith("PC"));
+
+// create plot
+const chart = wigglystuff()
+  .data(data)
+  .dimensions(dims)
+  .on("brush", selected => {{
+    
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+
+    selected.forEach(d => {{
+      const li = document.createElement("li");
+      li.textContent = d.text;
+      list.appendChild(li);
+    }});
+  }});
+
+document.getElementById("vis").appendChild(chart);
+</script>
+
+</body>
+</html>
+"""
+
+HTML(html)
